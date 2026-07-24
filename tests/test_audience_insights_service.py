@@ -5,15 +5,15 @@ from unittest.mock import Mock, patch
 
 import pytest
 from fastmcp import Context
-from google.ads.googleads.v20.enums.types.audience_insights_dimension import (
+from google.ads.googleads.v22.enums.types.audience_insights_dimension import (
     AudienceInsightsDimensionEnum,
 )
-from google.ads.googleads.v20.enums.types.age_range_type import AgeRangeTypeEnum
-from google.ads.googleads.v20.enums.types.gender_type import GenderTypeEnum
-from google.ads.googleads.v20.services.services.audience_insights_service import (
+from google.ads.googleads.v22.enums.types.age_range_type import AgeRangeTypeEnum
+from google.ads.googleads.v22.enums.types.gender_type import GenderTypeEnum
+from google.ads.googleads.v22.services.services.audience_insights_service import (
     AudienceInsightsServiceClient,
 )
-from google.ads.googleads.v20.services.types.audience_insights_service import (
+from google.ads.googleads.v22.services.types.audience_insights_service import (
     GenerateInsightsFinderReportResponse,
     GenerateAudienceCompositionInsightsResponse,
     GenerateSuggestedTargetingInsightsResponse,
@@ -109,7 +109,7 @@ async def test_generate_insights_finder_report(
         request.baseline_audience.age_ranges[0].type_
         == AgeRangeTypeEnum.AgeRangeType.AGE_RANGE_25_34
     )
-    # BasicInsightsAudience only has a single gender field
+    # InsightsAudience only has a single gender field
     assert request.baseline_audience.gender.type_ == GenderTypeEnum.GenderType.MALE
 
     # Verify specific audience
@@ -117,7 +117,7 @@ async def test_generate_insights_finder_report(
     assert specific_audience is not None
     assert len(specific_audience.country_location) == 2
     assert len(specific_audience.age_ranges) == 2
-    # BasicInsightsAudience only has a single gender field
+    # InsightsAudience only has a single gender field
     assert specific_audience.gender.type_ == GenderTypeEnum.GenderType.FEMALE
     assert len(specific_audience.user_interests) == 2
     assert (
@@ -182,14 +182,14 @@ async def test_generate_insights_finder_report_minimal(
     # Verify minimal setup - only countries
     assert len(request.baseline_audience.country_location) == 1
     assert len(request.baseline_audience.age_ranges) == 0
-    # BasicInsightsAudience gender field should be unset
+    # InsightsAudience gender field should be unset
     # For proto-plus, checking if the field is set is complex, so we skip this check
 
     specific_audience = getattr(request, "specific_audience", None)
     assert specific_audience is not None
     assert len(specific_audience.country_location) == 1
     assert len(specific_audience.age_ranges) == 0
-    # BasicInsightsAudience gender field should be unset
+    # InsightsAudience gender field should be unset
     # For proto-plus, checking if the field is set is complex, so we skip this check
     assert len(specific_audience.user_interests) == 0
 
